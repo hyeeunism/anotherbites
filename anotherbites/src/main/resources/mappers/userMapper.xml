@@ -2,5 +2,36 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="userMapper">
-   
+ 
+<insert id="register">
+	    INSERT INTO ab_user(   
+	   					       user_id
+	   					       , user_pwd
+	   					       , user_name
+	   					       , user_nickname
+	   					       , user_tel
+	   					       , user_email
+	   					       , user_addr )
+	                  VALUES(  
+	                 		   #{userId}
+	   					       , #{userPwd}
+	   					       , #{userName}
+	   					       , #{userNickname}
+	   					       , #{userTel}
+	   					       , #{userEmail}
+	   					       , #{userAddr})
+    </insert>
+    
+<!-- 패스워드 체크 -->
+	<select id="passChk" resultType="int">
+		SELECT COUNT(*) FROM ab_user
+		WHERE  user_id = #{userId}
+		AND user_pwd = #{userPwd}
+	</select>
+	
+<!-- id 중복체크 --> <!-- 아이디있으면1 없으면0 -->
+	<select id="idChk" resultType="int">
+		SELECT COUNT(*) FROM ab_user
+		WHERE  user_id = #{userId}
+	</select>
 </mapper>

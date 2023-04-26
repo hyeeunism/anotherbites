@@ -227,6 +227,14 @@
 		    <version>3.1.1.RELEASE</version>
 		</dependency>
 		<!-- 트랜젝션 END -->
+		
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+      <dependency>
+         <groupId>org.projectlombok</groupId>
+         <artifactId>lombok</artifactId>
+         <version>1.18.24</version>
+         <scope>provided</scope>
+      </dependency>
 
 	</dependencies>
     <build>
@@ -250,8 +258,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5.1</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
