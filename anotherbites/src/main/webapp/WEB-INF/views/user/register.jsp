@@ -29,7 +29,8 @@
 		<input type="text" id="userName" name="userName"><br><br>
 		
 		<label for="nickname">닉네임</label>
-		<input type="text" id="userNickname" name="userNickname"><br><br>
+		<input type="text" id="userNickname" name="userNickname">
+		<button class="nicknameChk" type="button" id="nicknameChk" onclick="fn_nicknameChk();" value="N">중복확인</button><br><br>
 		
 		<label for="email">이메일</label>
 		<input type="email" id="userEmail" name="userEmail"><br><br>
@@ -45,16 +46,23 @@
 		<input type="text" id="address1" name="address1"><br><br>
 		
 		<label for="userAddr">상세주소</label>
-		<input type="text" id="userAddr" name="userAddr"><br><br>
+		<input type="text" id="address2" name="address2"><br><br>
 		
 		<label for="address3">참고항목</label>
 		<input type="text" id="address3" name="address3"><br><br>
+		
+		<input type="hidden" id="userAddr" name="userAddr"><br><br>
 		
 		<input type="submit" value="회원가입">
 	</form>
 </body>
 <script>
 $(document).ready(function(){
+	 $("#address1, #address2").on("input", function() {
+	        var address1 = $("#address1").val();
+	        var address2 = $("#address2").val();
+	        $("#userAddr").val(address1 + address2);
+	    });
 	
 	$(".userJoin").on("submit", function(){
 		
@@ -66,11 +74,6 @@ $(document).ready(function(){
 	        return false
 	    }
 		
-		if($("#userId").val()==""){
-			alert("아이디를 입력해주세요.");
-			$("#userId").focus();
-			return false;
-		}
 		if($("#userPwd").val()==""){
 			alert("비밀번호를 입력해주세요.");
 			$("#userPwd").focus();
@@ -91,11 +94,7 @@ $(document).ready(function(){
 			$("#userName").focus();
 			return false;
 		}
-		if($("#userNickname").val()==""){
-			alert("닉네임을 입력해주세요.");
-			$("#userNickname").focus();
-			return false;
-		}
+
 		var idChkVal = $("#idChk").val();
 		if(idChkVal == "N"){
 			alert("중복확인 버튼을 눌러주세요.");
@@ -112,22 +111,23 @@ $(document).ready(function(){
 			$("#userTel").focus();
 			return false;
 		}
-		let telval = $('#userTel').val()
-	    let telalcheck = /^\d{3}-\d{3,4}-\d{4}$/;
-	    if (!telalcheck.test(telval) || telval.length<6){
-	    	alert('전화번호는 XXX-XXXX-XXXX 형식으로 입력해주세요.');
-	        $('#userTel').focus()
-	        return false
-	    }
 		if($("#zipcode").val()==""){
 			alert("우편번호를 입력해주세요.");
 			$("#zipcode").focus();
 			return false;
 		}
+		
 	});
 })
 
 function fn_idChk(){
+	
+	if($("#userId").val()==""){
+		alert("아이디를 입력해주세요.");
+		$("#userId").focus();
+		return false;
+	}
+	
 	$.ajax({
 		url : "/user/idChk",
 		type : "post",
@@ -135,10 +135,34 @@ function fn_idChk(){
 		data : {"userId" : $("#userId").val()},
 		success : function(data){
 			if(data == 1){
-				alert("중복된 아이디입니다.");
+				alert("사용 중인 아이디입니다.");
 			}else if(data == 0){
 				$("#idChk").attr("value", "Y");
 				alert("사용가능한 아이디입니다.");
+			}
+		}
+	})
+}
+
+function fn_nicknameChk(){
+	
+	if($("#userNickname").val()==""){
+		alert("닉네임을 입력해주세요.");
+		$("#userNickname").focus();
+		return false;
+	}
+	
+	$.ajax({
+		url : "/user/nicknameChk",
+		type : "post",
+		dataType : "json",
+		data : {"userNickname" : $("#userNickname").val()},
+		success : function(data){
+			if(data == 1){
+				alert("사용 중인 닉네임입니다.");
+			}else if(data == 0){
+				$("#nicknameChk").attr("value", "Y");
+				alert("사용가능한 닉네임입니다.");
 			}
 		}
 	})
