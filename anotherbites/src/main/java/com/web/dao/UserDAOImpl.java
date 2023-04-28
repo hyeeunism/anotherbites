@@ -18,12 +18,6 @@ public class UserDAOImpl implements UserDAO {
 		sql.insert("userMapper.register", vo);
 	}
 	
-	// 패스워드 체크
-	@Override
-	public int passChk(UserVO vo) throws Exception {
-		int result = sql.selectOne("userMapper.passChk", vo);
-			return result;
-		}
 			
 	// 아이디 중복 체크
 	@Override

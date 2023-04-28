@@ -12,66 +12,12 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
-<script>
-$(document).ready(function(){
-	
-	$("#submit").on("click", function(){
-		
-		let idval = $('#userId').val()
-	    let idvalcheck = /^[a-z0-9]+$/
-	    if (!idvalcheck.test(idval) || idval.length<6){
-	    	alert('아이디는 영소문자,숫자로 구성된 6글자 이상으로 조합하시오.')
-	        $('#userId').focus()
-	        return false
-	    }
-		
-		
-		if($("#userId").val()==""){
-			alert("아이디를 입력해주세요.");
-			$("#userId").focus();
-			return false;
-		}
-		if($("#userPwd").val()==""){
-			alert("비밀번호를 입력해주세요.");
-			$("#userPwd").focus();
-			return false;
-		}
-		if($("#userName").val()==""){
-			alert("성명을 입력해주세요.");
-			$("#userName").focus();
-			return false;
-		}
-		var idChkVal = $("#idChk").val();
-		if(idChkVal == "N"){
-			alert("중복확인 버튼을 눌러주세요.");
-		}else if(idChkVal == "Y"){
-			$("#regForm").submit();
-		}
-	});
-})
-
-function fn_idChk(){
-	$.ajax({
-		url : "/user/idChk",
-		type : "post",
-		dataType : "json",
-		data : {"userId" : $("#userId").val()},
-		success : function(data){
-			if(data == 1){
-				alert("중복된 아이디입니다.");
-			}else if(data == 0){
-				$("#idChk").attr("value", "Y");
-				alert("사용가능한 아이디입니다.");
-			}
-		}
-	})
-}
-</script>
 <body>
 	<h1>회원가입</h1>
-	<form method="post" action="/user/register" class="userJoin" onsubmit="setAddress()">
+	<form method="post" action="/user/register" class="userJoin">
 		<label for="id">아이디</label>
-		<input type="text" id="userId" name="userId"><br><br>
+		<input type="text" id="userId" name="userId">
+		<button class="idChk" type="button" id="idChk" onclick="fn_idChk();" value="N">중복확인</button><br><br>
 		
 		<label for="userPwd">비밀번호</label>
 		<input type="password" id="userPwd" name="userPwd"><br><br>
@@ -107,7 +53,97 @@ function fn_idChk(){
 		<input type="submit" value="회원가입">
 	</form>
 </body>
+<script>
+$(document).ready(function(){
+	
+	$(".userJoin").on("submit", function(){
+		
+		let idval = $('#userId').val()
+	    let idvalcheck = /^[a-z0-9]+$/
+	    if (!idvalcheck.test(idval) || idval.length<6){
+	    	alert('아이디는 영소문자,숫자로 구성된 6글자 이상으로 조합하시오.')
+	        $('#userId').focus()
+	        return false
+	    }
+		
+		if($("#userId").val()==""){
+			alert("아이디를 입력해주세요.");
+			$("#userId").focus();
+			return false;
+		}
+		if($("#userPwd").val()==""){
+			alert("비밀번호를 입력해주세요.");
+			$("#userPwd").focus();
+			return false;
+		}
+		if($("#pwdCheck").val()==""){
+			alert("비밀번호를 입력해주세요.");
+			$("#pwdCheck").focus();
+			return false;
+		}
+		if($("#pwdCheck").val()!=$("#userPwd").val()){
+			alert("비밀번호가 다릅니다.");
+			$("#pwdCheck").focus();
+			return false;
+		}
+		if($("#userName").val()==""){
+			alert("성명을 입력해주세요.");
+			$("#userName").focus();
+			return false;
+		}
+		if($("#userNickname").val()==""){
+			alert("닉네임을 입력해주세요.");
+			$("#userNickname").focus();
+			return false;
+		}
+		var idChkVal = $("#idChk").val();
+		if(idChkVal == "N"){
+			alert("중복확인 버튼을 눌러주세요.");
+		}else if(idChkVal == "Y"){
+			$("#regForm").submit();
+		}
+		if($("#userEmail").val()==""){
+			alert("이메일을 입력해주세요.");
+			$("#userEmail").focus();
+			return false;
+		}
+		if($("#userTel").val()==""){
+			alert("휴대폰번호를 입력해주세요.");
+			$("#userTel").focus();
+			return false;
+		}
+		let telval = $('#userTel').val()
+	    let telalcheck = /^\d{3}-\d{3,4}-\d{4}$/;
+	    if (!telalcheck.test(telval) || telval.length<6){
+	    	alert('전화번호는 XXX-XXXX-XXXX 형식으로 입력해주세요.');
+	        $('#userTel').focus()
+	        return false
+	    }
+		if($("#zipcode").val()==""){
+			alert("우편번호를 입력해주세요.");
+			$("#zipcode").focus();
+			return false;
+		}
+	});
+})
 
+function fn_idChk(){
+	$.ajax({
+		url : "/user/idChk",
+		type : "post",
+		dataType : "json",
+		data : {"userId" : $("#userId").val()},
+		success : function(data){
+			if(data == 1){
+				alert("중복된 아이디입니다.");
+			}else if(data == 0){
+				$("#idChk").attr("value", "Y");
+				alert("사용가능한 아이디입니다.");
+			}
+		}
+	})
+}
+</script>
 <script>
     function openDaumPostcode() {
         new daum.Postcode({

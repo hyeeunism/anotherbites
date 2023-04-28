@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.web.service.UserService;
 import com.web.vo.UserVO;
@@ -41,6 +42,15 @@ public class UserController {
 			throw new RuntimeException();
 		}
 		return "redirect:/";
+	}
+	
+	
+	// 아이디 중복 체크
+	@ResponseBody
+	@RequestMapping(value="/idChk", method = RequestMethod.POST)
+	public int idChk(UserVO vo) throws Exception {
+		int result = service.idChk(vo);
+		return result;
 	}
 		
 

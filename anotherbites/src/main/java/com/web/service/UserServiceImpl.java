@@ -16,13 +16,7 @@ public class UserServiceImpl implements UserService {
 	public void register(UserVO vo) throws Exception {
 		dao.register(vo);
 	}
-	
-	// 패스워드 체크
-		@Override
-		public int passChk(UserVO vo) throws Exception {
-			int result = dao.passChk(vo);
-			return result;
-		}
+
 		
 		// 아이디 중복 체크
 		@Override
